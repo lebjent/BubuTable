@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: app
+
+  # [Java 21의 핵심] 가상 스레드 활성화
+  threads:
+    virtual:
+      enabled: true
+
+  # 데이터베이스 연결 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/DPRO?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: dpro
+    password: 1234
+
+  # JPA / Hibernate 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    hibernate:
+      ddl-auto: validate # 직접 생성한 테이블과 엔티티가 맞는지 검사만 함
+    show-sql: true       # 콘솔에 SQL 로그 출력
+    properties:
+      hibernate:
+        format_sql: true # SQL을 보기 좋게 정렬
+
+  # Thymeleaf 설정
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+server:
+  port: 8090
+  tomcat:
+    threads:
+      max: 200 # 가상 스레드 사용 시 이 수치는 매우 널널해짐

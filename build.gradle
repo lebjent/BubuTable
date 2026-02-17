@@ -1,0 +1,44 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.java.point'
+version = '0.0.1-SNAPSHOT'
+description = 'Java21 Project'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+// 1. Spring Data JPA (데이터베이스 조작 핵심)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // 2. MySQL Connector (자바와 MySQL을 연결해주는 드라이버)
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 3. Thymeleaf (화면 렌더링)
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // 4. Web (REST API 및 컨트롤러 개발)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 5. Lombok (Getter, Setter, Builder 등을 어노테이션으로 자동 생성)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 테스트를 위한 설정
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
