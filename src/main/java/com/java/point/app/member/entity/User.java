@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "TB_MB_USER", schema = "DPRO")
+@Table(name = "TB_MB_USER", schema = "dpro")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 무분별한 생성을 막음
 public class User extends BaseEntity {

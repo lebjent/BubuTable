@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>우리집 주방 : 신혼부부 레시피</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b6b; /* 따뜻한 다홍색 */
+            --secondary-color: #f7d794;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+        .btn-recipe {
+            background-color: var(--primary-color);
+            border: none;
+            color: white;
+        }
+        .btn-recipe:hover {
+            background-color: #ee5253;
+            color: white;
+        }
+        .recipe-card:hover {
+            transform: scale(1.02);
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/" style="color: var(--primary-color);">
+            <i class="bi bi-egg-fried"></i> BuBu Table
+        </a>
+        <div class="navbar-nav me-auto"> <a class="nav-link" href="/recipes">레시피 추천</a>
+            <a class="nav-link" href="/community">BuBu커뮤니티</a> </div>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/members/join">회원가입</a>
+            <a class="nav-link" href="#">로그인</a>
+        </div>
+    </div>
+</nav>
+
+<header class="hero-section">
+    <div class="container">
+        <h1 class="display-3 fw-bold">오늘 퇴근 후, <br>함께 요리할까요?</h1>
+        <p class="lead mt-3">맞벌이 부부를 위한 15분 완성 초간단 레시피 추천</p>
+        <div class="mt-4">
+            <a href="/members/join" class="btn btn-recipe btn-lg px-5 shadow">시작하기</a>
+        </div>
+    </div>
+</header>
+
+<section class="container my-5 py-5">
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 recipe-card bg-light">
+                <i class="bi bi-stopwatch fs-1 text-danger"></i>
+                <h3 class="h5 mt-3 fw-bold">15분 퀵 레시피</h3>
+                <p class="text-muted small">퇴근 후에도 부담 없는 <br>빠른 요리들을 추천합니다.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 recipe-card bg-light">
+                <i class="bi bi-heart-fill fs-1 text-danger"></i>
+                <h3 class="h5 mt-3 fw-bold">냉장고 파먹기</h3>
+                <p class="text-muted small">남은 재료를 입력하면 <br>최적의 메뉴를 알려드려요.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 recipe-card bg-light">
+                <i class="bi bi-people-fill fs-1 text-danger"></i>
+                <h3 class="h5 mt-3 fw-bold">부부 공동 가계부</h3>
+                <p class="text-muted small">함께 장보고 관리하는 <br>스마트한 식비 관리.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">오늘의 추천 메뉴 🍲</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="salad">
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">건강식</span>
+                        <h5 class="card-title">연어 아보카도 포켓볼</h5>
+                        <p class="card-text text-muted">불 없이 만드는 가장 건강한 저녁 식사</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="text-center py-5 border-top">
+    <p class="text-muted mb-0">© 2026 HoneyCook - 맞벌이 신혼부부를 위한 주방 비서</p>
+</footer>
+
+</body>
+</html>

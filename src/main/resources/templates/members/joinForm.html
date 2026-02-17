@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HoneyCook - 회원가입</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .join-container {
+            max-width: 450px;
+            width: 100%;
+            margin: auto;
+        }
+        .card {
+            border: none;
+            border-radius: 1.5rem;
+            shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .btn-join {
+            background-color: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            font-weight: bold;
+        }
+        .btn-join:hover {
+            background-color: #ee5253;
+            color: white;
+        }
+        .form-control:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+        }
+        .logo-text {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="join-container p-3">
+    <div class="text-center mb-4">
+        <a href="/" class="logo-text h2"><i class="bi bi-egg-fried"></i> BuBu Table</a>
+        <p class="text-muted mt-2">함께 만드는 행복한 주방, BuBu 테이블에 오신 걸 환영해요!</p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-5">
+            <h4 class="text-center mb-4 fw-bold">회원가입</h4>
+
+            <form action="/members/join" method="post">
+                <div class="mb-3">
+                    <label class="form-label">이메일 주소</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                        <input type="email" name="email" class="form-control" placeholder="example@email.com" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">비밀번호</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">우리집 요리사 닉네임</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-person-heart"></i></span>
+                        <input type="text" name="nickname" class="form-control" placeholder="닉네임을 입력하세요" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-join w-100 mb-3 shadow-sm">가입 완료</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <span class="text-muted small">이미 계정이 있으신가요?</span>
+                <a href="#" class="small text-decoration-none ms-1" style="color: #ff6b6b;">로그인하기</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/" class="text-muted small text-decoration-none"><i class="bi bi-arrow-left"></i> 홈으로 돌아가기</a>
+    </div>
+</div>
+
+</body>
+</html>
