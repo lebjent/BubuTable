@@ -1,0 +1,36 @@
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .join-container {
+            max-width: 450px;
+            width: 100%;
+            margin: auto;
+        }
+        .card {
+            border: none;
+            border-radius: 1.5rem;
+            shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .btn-join {
+            background-color: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            font-weight: bold;
+        }
+        .btn-join:hover {
+            background-color: #ee5253;
+            color: white;
+        }
+        .form-control:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+        }
+        .logo-text {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-decoration: none;
+        }

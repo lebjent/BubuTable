@@ -37,6 +37,11 @@ dependencies {
 
     // 테스트를 위한 설정
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 테스트에서 시큐리티를 사용하기 위한 도구 (선택)
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

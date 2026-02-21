@@ -1,6 +1,6 @@
 package com.java.point.app.member.entity;
 
-import com.java.point.app.common.BaseEntity;
+import com.java.point.app.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true, length = 50) // unique 추가
     private String nickname;
 
     @Column(name = "USER_ROLE", length = 20)

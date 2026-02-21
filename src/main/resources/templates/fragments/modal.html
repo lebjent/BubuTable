@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="commonModal" class="modal fade" id="globalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body p-4 text-center">
+                <div id="gModalIcon" class="mb-3 fs-1"></div>
+                <h5 class="fw-bold" id="gModalTitle"></h5>
+                <p class="text-muted mb-4" id="gModalMessage"></p>
+                <div id="gModalFooter" class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary py-2" data-bs-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -5,44 +5,7 @@
     <title>HoneyCook - 회원가입</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .join-container {
-            max-width: 450px;
-            width: 100%;
-            margin: auto;
-        }
-        .card {
-            border: none;
-            border-radius: 1.5rem;
-            shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .btn-join {
-            background-color: #ff6b6b;
-            border: none;
-            color: white;
-            padding: 0.8rem;
-            font-weight: bold;
-        }
-        .btn-join:hover {
-            background-color: #ee5253;
-            color: white;
-        }
-        .form-control:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
-        }
-        .logo-text {
-            color: #ff6b6b;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    </style>
+    <link th:href="@{/css/member/joinForm.css}" rel="stylesheet">
 </head>
 <body>
 
@@ -56,28 +19,40 @@
         <div class="card-body p-5">
             <h4 class="text-center mb-4 fw-bold">회원가입</h4>
 
-            <form action="/members/join" method="post">
+            <form action="/api/user/join" method="post">
                 <div class="mb-3">
                     <label class="form-label">이메일 주소</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
                         <input type="email" name="email" class="form-control" placeholder="example@email.com" required>
                     </div>
+                    <div class="invalid-feedback">올바른 이메일 형식을 입력해주세요.</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">비밀번호</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
-                        <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
                     </div>
+                    <div class="invalid-feedback">비밀번호는 8자 이상이어야 합니다.</div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
+                    <label class="form-label">비밀번호 확인</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-shield-check"></i></span>
+                        <input type="password" id="passwordConfirm" class="form-control" placeholder="한 번 더 입력하세요" required>
+                    </div>
+                    <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">우리집 요리사 닉네임</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-person-heart"></i></span>
-                        <input type="text" name="nickname" class="form-control" placeholder="닉네임을 입력하세요" required>
+                        <input type="text" id="nickname" name="nickname" class="form-control" placeholder="닉네임을 입력하세요" required>
+                        <div class="invalid-feedback">이미 중복된 닉네임이 있습니다..</div>
                     </div>
                 </div>
 
@@ -95,6 +70,162 @@
         <a href="/" class="text-muted small text-decoration-none"><i class="bi bi-arrow-left"></i> 홈으로 돌아가기</a>
     </div>
 </div>
+<div th:replace="~{fragments/modal :: commonModal}"></div>
+<script th:src="@{/js/common/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/common.js}"></script>
+<script>
+    // 1. 필요한 요소 가져오기
+    const joinForm = document.querySelector('form');
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('#password');
+    const confirmInput = document.querySelector('#passwordConfirm');
+    const nicknameInput = document.querySelector('#nickname');
+    const submitBtn = document.querySelector('.btn-join');
 
+    // 2. 유틸리티 함수들
+    const validateEmail = (email) => {
+        return String(email).toLowerCase().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    };
+
+    const setValidationState = (input, isValid, message = "") => {
+        const parentBox = input.closest('.mb-3');
+        const feedback = parentBox.querySelector('.invalid-feedback');
+
+        if (isValid) {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+            if (feedback) feedback.style.display = 'none';
+        } else {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+            if (feedback) {
+                if (message) feedback.innerText = message;
+                feedback.style.display = 'block';
+            }
+        }
+    };
+
+    // 3. 실시간 검증 로직
+
+    // [이메일] 중복 체크
+    emailInput.addEventListener('change', async () => {
+        const email = emailInput.value;
+        if (!validateEmail(email)) {
+            setValidationState(emailInput, false, "올바른 이메일 형식을 입력해주세요.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/user/check-email?email=${encodeURIComponent(email)}`);
+            const result = await response.json();
+
+            if (result.data === true) {
+                setValidationState(emailInput, true);
+            } else {
+                setValidationState(emailInput, false, result.message || "이미 가입된 이메일이에요! 📬");
+            }
+        } catch (error) {
+            console.error("이메일 체크 오류:", error);
+        }
+    });
+
+    // [비밀번호] 유효성 및 일치 확인
+    const validatePasswords = () => {
+        const p1 = passwordInput.value;
+        const p2 = confirmInput.value;
+
+        if (p1.length > 0 && p1.length < 8) {
+            setValidationState(passwordInput, false, "비밀번호는 8자 이상으로 설정해주세요! 🔐");
+        } else if (p1.length >= 8) {
+            setValidationState(passwordInput, true);
+        }
+
+        if (p2.length > 0) {
+            if (p1 === p2 && p1.length >= 8) {
+                setValidationState(confirmInput, true);
+            } else {
+                setValidationState(confirmInput, false, "비밀번호가 일치하지 않거나 너무 짧아요. 🧐");
+            }
+        }
+    };
+    passwordInput.addEventListener('input', validatePasswords);
+    confirmInput.addEventListener('input', validatePasswords);
+
+    // [닉네임] 중복 체크
+    nicknameInput.addEventListener('change', async () => {
+        const nickname = nicknameInput.value;
+        if (nickname.length < 2) {
+            setValidationState(nicknameInput, false, "닉네임은 2자 이상 입력해주세요.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/user/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+            const result = await response.json();
+
+            if (result.data === true) {
+                setValidationState(nicknameInput, true);
+            } else {
+                setValidationState(nicknameInput, false, result.message || "이미 사용 중인 닉네임이에요! 🍳");
+            }
+        } catch (error) {
+            console.error("닉네임 체크 오류:", error);
+        }
+    });
+
+    // 4. 통합 회원가입 전송 로직
+    joinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 최종 유효성 검사 (is-valid 클래스 확인)
+        if (!emailInput.classList.contains('is-valid')) {
+            setValidationState(emailInput, false, "이메일 중복 확인이 필요합니다.");
+            emailInput.focus();
+            return;
+        }
+
+        if (!passwordInput.classList.contains('is-valid') || !confirmInput.classList.contains('is-valid')) {
+            setValidationState(confirmInput, false, "비밀번호 설정을 확인해주세요.");
+            passwordInput.focus();
+            return;
+        }
+
+        if (!nicknameInput.classList.contains('is-valid')) {
+            setValidationState(nicknameInput, false, "닉네임 중복 확인이 필요합니다.");
+            nicknameInput.focus();
+            return;
+        }
+
+        // 전송 데이터 구성
+        const formData = {
+            email: emailInput.value,
+            password: passwordInput.value,
+            nickname: nicknameInput.value
+        };
+
+        // API 전송
+        await sendApiRequest(
+            '/api/user/join',
+            'POST',
+            formData,
+            (result) => {
+                showAlert({
+                    title: "환영합니다! 🎉",
+                    message: result.message,
+                    type: "success",
+                    onConfirm: () => { location.href = "/login"; }
+                });
+            },
+            (errorMessage) => {
+                showAlert({
+                    title: "가입 실패 🧐",
+                    message: errorMessage,
+                    type: "error"
+                });
+            }
+        );
+    });
+
+</script>
 </body>
 </html>
