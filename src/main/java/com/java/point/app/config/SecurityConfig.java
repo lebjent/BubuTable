@@ -15,10 +15,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // API 테스트를 위해 CSRF 잠시 비활성화
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 모든 페이지 접근 허용 (일단은!)
-                );
+                        .requestMatchers("/", "/login", "/join", "/css/**", "/js/**", "/api/user/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/api/user/login") // JS에서 호출하는 URL
+                        // 로그인 성공 시 처리
+                        .successHandler((request, response, authentication) -> {
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"success\": true, \"message\": \"로그인에 성공했습니다!\"}");
+                        })
+                        // 로그인 실패 시 처리
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(401); // Unauthorized
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"success\": false, \"message\": \"이메일 또는 비밀번호를 확인해주세요.\"}");
+                        })
+                        .permitAll()
+                )
+                .logout(logout -> logout.logoutSuccessUrl("/"));
+
         return http.build();
     }
 
