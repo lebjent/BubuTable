@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 - 글쓰기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8f9fa; color: #333; }
+        .write-container { max-width: 900px; margin-top: 50px; margin-bottom: 50px; }
+
+        /* 카드 디자인 */
+        .card { border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .card-header { background: white; border-bottom: 1px solid #f0f0f0; padding: 25px; border-radius: 15px 15px 0 0 !important; }
+        .card-body { padding: 30px; }
+
+        /* 입력창 디자인 커스텀 */
+        .form-control, .form-select {
+            border: 1px solid #eee; padding: 12px 15px; border-radius: 8px; transition: all 0.3s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #6c5ce7; box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.1);
+        }
+
+        /* 버튼 디자인 */
+        .btn-submit { background-color: #6c5ce7; border: none; padding: 12px 30px; font-weight: 500; border-radius: 8px; transition: 0.3s; color: white; }
+        .btn-submit:hover { background-color: #5b4cc4; transform: translateY(-2px); color: white; }
+        .btn-cancel { background-color: #f1f2f6; border: none; padding: 12px 30px; border-radius: 8px; color: #555; }
+        .btn-cancel:hover { background-color: #dfe4ea; }
+
+        .write-title { font-weight: 700; color: #2d3436; margin-bottom: 5px; }
+        .write-subtitle { color: #b2bec3; font-size: 0.9rem; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="container write-container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="write-title">✏️ 게시글 작성</h3>
+            <p class="write-subtitle">이웃 부부들과 소중한 정보를 공유해 보세요.</p>
+        </div>
+
+        <div class="card-body">
+            <form id="writeForm" th:action="@{/community/write}" method="post">
+                <div class="row mb-4">
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold small">카테고리</label>
+                        <select name="category" class="form-select" required>
+                            <option value="">선택해주세요</option>
+                            <option th:each="cat : ${T(com.java.point.app.community.entity.PostCategory).values()}"
+                                    th:value="${cat.name()}" th:text="${cat.description}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <label class="form-label fw-bold small">태그/소분류</label>
+                        <input type="text" name="subCategory" class="form-control" placeholder="예: #강남구 #이유식 #육아템">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small">제목</label>
+                    <input type="text" name="title" class="form-control form-control-lg" placeholder="제목을 입력하세요" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small">내용</label>
+                    <div class="editor-container">
+                        <div id="editor"></div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="content" id="content">
+
+                <div class="d-flex justify-content-between align-items-center mt-5">
+                    <a href="/community" class="btn btn-cancel">취소</a>
+                    <button type="button" class="btn btn-submit" onclick="submitPost()">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#editor'),
+        height: '500px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'tab'
+    });
+
+    function submitPost() {
+        const contentHtml = editor.getHTML();
+        if (editor.getMarkdown().trim() === '') {
+            alert('내용을 입력해주세요!');
+            return;
+        }
+        document.querySelector('#content').value = contentHtml;
+        document.querySelector('#writeForm').submit();
+    }
+</script>
+</body>
+</html>

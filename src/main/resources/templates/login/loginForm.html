@@ -58,7 +58,7 @@
 
             <div class="text-center mt-3">
                 <span class="text-muted small">아직 회원이 아니신가요?</span>
-                <a th:href="@{/join}" class="small text-decoration-none ms-1 fw-bold" style="color: #ff6b6b;">회원가입하기</a>
+                <a th:href="@{/api/user/join}" class="small text-decoration-none ms-1 fw-bold" style="color: #ff6b6b;">회원가입하기</a>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
     </div>
 </div>
 
-<div th:replace="~{fragments/modal :: commonModal}"></div>
+<div th:replace="~{common/modal :: commonModal}"></div>
 
 <script th:src="@{/js/common/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/common/common.js}"></script>
@@ -102,7 +102,6 @@
         } catch (error) {
             console.error("로그인 요청 중 에러:", error);
         }
-    });
 </script>
 </body>
 </html>

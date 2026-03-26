@@ -18,6 +18,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/join", "/css/**", "/js/**", "/api/user/**").permitAll()
+                        .requestMatchers("/community/write").authenticated() // 글쓰기는 로그인 필수
+                        .requestMatchers("/community", "/community/{id}").permitAll() // 목록과 상세글은 누구나 가능
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

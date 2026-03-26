@@ -22,7 +22,7 @@ spring:
     properties:
       hibernate:
         # 2. 하이버네이트 6 버전에서 MySQL 5.7을 쓸 때 발생하는 물리적 명명 규칙 충돌 방지
-        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         # 3. 테이블 이름을 찾을 때 따옴표 처리를 해서 예약어 충돌이나 대소문자 문제를 방어해.
         globally_quoted_identifiers: true
         format_sql: true
