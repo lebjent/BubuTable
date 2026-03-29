@@ -73,10 +73,13 @@
 <script th:src="@{/js/common/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/common/common.js}"></script>
 <script>
+    // 폼 요소 선택
+    const loginForm = document.querySelector('#loginForm');
+
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // JSON 대신 URLSearchParams 사용 (Security 기본 규격)
+        // 1. 시큐리티 규격에 맞춰 파라미터 구성
         const params = new URLSearchParams();
         params.append('username', loginForm.username.value);
         params.append('password', loginForm.password.value);
@@ -90,18 +93,30 @@
                 body: params
             });
 
-            if (response.ok) {
-                location.href = "/"; // 성공 시 홈으로
+            // 2. SecurityConfig의 Success/Failure Handler가 보낸 JSON 읽기
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // ✅ 로그인 성공: 메인 화면으로 이동
+                console.log("로그인 성공:", result.message);
+                location.href = "/";
             } else {
+                // ❌ 로그인 실패: 서버가 보낸 메시지 출력
                 showAlert({
-                    title: "로그인 실패",
-                    message: "이메일 또는 비밀번호를 다시 확인해주세요. 🧐",
+                    title: "로그인 실패 🧐",
+                    message: result.message || "이메일 또는 비밀번호를 다시 확인해주세요.",
                     type: "error"
                 });
             }
         } catch (error) {
             console.error("로그인 요청 중 에러:", error);
+            showAlert({
+                title: "서버 연결 오류",
+                message: "통신 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                type: "error"
+            });
         }
+    }); // 이 부분 괄호가 누락되어 있었어요!
 </script>
 </body>
 </html>

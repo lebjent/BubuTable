@@ -51,7 +51,7 @@ public class CommunityController {
         postService.save(requestDto, author);
 
         // 3. 완료 후 목록 페이지로 이동
-        return "redirect:/community";
+        return "redirect:/community/post-list";
     }
 
     @GetMapping("/post-list")
